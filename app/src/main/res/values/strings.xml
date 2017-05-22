@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Inventory App</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="not_supported">Insertion is not supported for</string>
+    <string name="empty_view_title_text">No product found</string>
+    <string name="empty_view_subtitle_text">Get started by adding a product</string>
+    <string name="product_name">product name</string>
+    <string name="price">price</string>
+    <string name="sold">sold</string>
+    <string name="sale">sale</string>
+    <string name="add">add</string>
+    <string name="name">NAME</string>
+    <string name="quantity">quantity</string>
+    <string name="enter_the_number_of_sold_units">enter the number of sold units</string>
+    <string name="add_to_stock">add to stock</string>
+    <string name="enter_the_quantity">enter the quantity</string>
+    <string name="order">order</string>
+    <string name="delete">delete</string>
+    <string name="editor_activity_title_new_product">editor activity title new product</string>
+    <string name="edit_product">edit product</string>
+    <string name="editor_insert_product_failed">editor insert product failed</string>
+    <string name="editor_insert_product_successful">editor insert product successful</string>
+    <string name="editor_update_product_failed">editor update product failed</string>
+    <string name="editor_update_droduct_successful">editor update droduct successful</string>
+    <string name="action_save">Save</string>
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing">Keep Editing</string>
+    <string name="delete_dialog_msg">Delete this product?</string>
+    <string name="cancel">Cancel</string>
+    <string name="editor_delete_product_failed">editor delete product failed</string>
+    <string name="editor_delete_product_successful">editor delete product successful</string>
+    <string name="quantityTitle">quantity:  </string>
+    <string name="priceTitle">price:  </string>
+    <string name="try_another_sale_number">the price after sale is equal to 0, please put another sale number</string>
+</resources>
