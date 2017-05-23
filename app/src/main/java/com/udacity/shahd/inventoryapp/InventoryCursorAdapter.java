@@ -71,26 +71,25 @@ class InventoryCursorAdapter extends CursorAdapter {
         // Extract properties from cursor
         final String id = cursor.getString(cursor.getColumnIndexOrThrow(InventoryEntry._ID));
         String name = cursor.getString(cursor.getColumnIndexOrThrow(InventoryEntry.COLUMN_PRODUCT_NAME));
-        String quantity = cursor.getString(cursor.getColumnIndexOrThrow(InventoryEntry.COLUMN_PRODUCT_QUANTITY));
+        int quantity = cursor.getInt(cursor.getColumnIndexOrThrow(InventoryEntry.COLUMN_PRODUCT_QUANTITY));
         int price = cursor.getInt(cursor.getColumnIndexOrThrow(InventoryEntry.COLUMN_PRODUCT_PRICE));
         String imgPath = cursor.getString(cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_PICTURE));
         // Populate fields with extracted properties
         tvName.setText(name);
-        tvQuantity.setText(quantity);
+        tvQuantity.setText(String.valueOf(quantity));
         tvPrice.setText(String.valueOf(price));
-//        imageView.setImageBitmap(BitmapFactory.decodeFile(imgPath));
 
-        int newPrice = price - 1;
-        if (newPrice < 1) {
+        int newQuantity = quantity - 1;
+        if (newQuantity < 1) {
             Toast.makeText(context, R.string.try_another_sale_number,
                     Toast.LENGTH_LONG).show();
-            newPrice = price;
+            newQuantity = price;
         }
         final Uri uriId = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, Long.parseLong(id));
         final ContentValues values = new ContentValues();
         values.put(InventoryEntry.COLUMN_PRODUCT_NAME, name);
-        values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, (newPrice));
-        values.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, quantity);
+        values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, (price));
+        values.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, newQuantity);
         values.put(InventoryEntry.COLUMN_PRODUCT_PICTURE, imgPath);
 
         linearLayout.setOnClickListener(new View.OnClickListener() {

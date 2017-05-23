@@ -33,5 +33,6 @@
     <string name="editor_delete_product_successful">editor delete product successful</string>
     <string name="quantityTitle">quantity:  </string>
     <string name="priceTitle">price:  </string>
-    <string name="try_another_sale_number">the price after sale is equal to 0, please put another sale number</string>
+    <string name="try_another_sale_number">the quantity after sale is equal to 0, please put another sale number</string>
+    <string name="enter_valid_info">please enter a valid information</string>
 </resources>

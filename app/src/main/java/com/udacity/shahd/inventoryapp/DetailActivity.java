@@ -135,30 +135,36 @@ public class DetailActivity extends AppCompatActivity implements
                     }
 //
                     Log.d("mImageButton", "setOnClickListener");
-                    int newPrice = price - sold;
-                    if (newPrice < 1) {
-                        Toast.makeText(getApplicationContext(), R.string.try_another_sale_number,
+                    if (sold <= 0) {
+                        Toast.makeText(getApplicationContext(), R.string.enter_valid_info,
                                 Toast.LENGTH_LONG).show();
-                        newPrice = price;
-                    }
-                    Log.d("mImageButton", "price: " + price + ", sold: " + sold);
-                    values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, newPrice);
-                    values.put(InventoryEntry.COLUMN_PRODUCT_PICTURE, picturePath);
-                    values.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, quantity);
-                    int newUri = getContentResolver().update(mCurrentProductUri, values, null, null);
-
-                    // Show a toast message depending on whether or not the insertion was successful
-                    if (newUri < 0) {
-                        // If the new content URI is null, then there was an error with insertion.
-                        Toast.makeText(getApplicationContext(), getString(R.string.editor_update_product_failed),
-                                Toast.LENGTH_SHORT).show();
                     } else {
-                        // Otherwise, the insertion was successful and we can display a toast.
-                        Toast.makeText(getApplicationContext(), getString(R.string.editor_update_droduct_successful),
-                                Toast.LENGTH_SHORT).show();
+                        int newQuantity = quantity - sold;
+                        if (newQuantity < 1) {
+                            Toast.makeText(getApplicationContext(), R.string.try_another_sale_number,
+                                    Toast.LENGTH_LONG).show();
+                            newQuantity = quantity;
+                        }
+                        Log.d("mImageButton", "newQuantity: " + newQuantity + ", sold: " + sold);
+                        values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, price);
+                        values.put(InventoryEntry.COLUMN_PRODUCT_PICTURE, picturePath);
+                        values.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, newQuantity);
+                        int newUri = getContentResolver().update(mCurrentProductUri, values, null, null);
+
+                        // Show a toast message depending on whether or not the insertion was successful
+                        if (newUri < 0) {
+                            // If the new content URI is null, then there was an error with insertion.
+                            Toast.makeText(getApplicationContext(), getString(R.string.editor_update_product_failed),
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Otherwise, the insertion was successful and we can display a toast.
+                            Toast.makeText(getApplicationContext(), getString(R.string.editor_update_droduct_successful),
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             });
+
 
         }
 
@@ -187,23 +193,27 @@ public class DetailActivity extends AppCompatActivity implements
                     picturePath = imagePath;
                 }
 //
-                Log.d("mImageButton", "setOnClickListener");
-                quantity += stock;
-                Log.d("mImageButton", "price: " + price + ", stock: " + stock);
-                values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, price);
-                values.put(InventoryEntry.COLUMN_PRODUCT_PICTURE, picturePath);
-                values.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, quantity);
-                int newUri = getContentResolver().update(mCurrentProductUri, values, null, null);
-
-                // Show a toast message depending on whether or not the insertion was successful
-                if (newUri < 0) {
-                    // If the new content URI is null, then there was an error with insertion.
-                    Toast.makeText(getApplicationContext(), getString(R.string.editor_update_product_failed),
-                            Toast.LENGTH_SHORT).show();
+                if (stock <= 0) {
+                    Toast.makeText(getApplicationContext(), R.string.enter_valid_info,
+                            Toast.LENGTH_LONG).show();
                 } else {
-                    // Otherwise, the insertion was successful and we can display a toast.
-                    Toast.makeText(getApplicationContext(), getString(R.string.editor_update_droduct_successful),
-                            Toast.LENGTH_SHORT).show();
+                    quantity += stock;
+                    Log.d("mImageButton", "price: " + price + ", stock: " + stock);
+                    values.put(InventoryEntry.COLUMN_PRODUCT_PRICE, price);
+                    values.put(InventoryEntry.COLUMN_PRODUCT_PICTURE, picturePath);
+                    values.put(InventoryEntry.COLUMN_PRODUCT_QUANTITY, quantity);
+                    int newUri = getContentResolver().update(mCurrentProductUri, values, null, null);
+
+                    // Show a toast message depending on whether or not the insertion was successful
+                    if (newUri < 0) {
+                        // If the new content URI is null, then there was an error with insertion.
+                        Toast.makeText(getApplicationContext(), getString(R.string.editor_update_product_failed),
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Otherwise, the insertion was successful and we can display a toast.
+                        Toast.makeText(getApplicationContext(), getString(R.string.editor_update_droduct_successful),
+                                Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -294,15 +304,16 @@ public class DetailActivity extends AppCompatActivity implements
 
         if (mCurrentProductUri == null &&
                 TextUtils.isEmpty(nameString) &&
-                TextUtils.isEmpty(priceString) && TextUtils.isEmpty(quantityString)) {
+                TextUtils.isEmpty(priceString) && TextUtils.isEmpty(quantityString) && TextUtils.isEmpty(imgPath)) {
             return;
         }
         if (
                 TextUtils.isEmpty(nameString) ||
-                        TextUtils.isEmpty(priceString) || TextUtils.isEmpty(quantityString)) {
-            finish();
+                        TextUtils.isEmpty(priceString) || TextUtils.isEmpty(quantityString) || TextUtils.isEmpty(imgPath)) {
+            Toast.makeText(this, R.string.enter_valid_info, Toast.LENGTH_SHORT).show();
             return;
         }
+
 
         // If the weight is not provided by the user, don't try to parse the string into an
         // integer value. Use 0 by default.
@@ -340,7 +351,7 @@ public class DetailActivity extends AppCompatActivity implements
                 Toast.makeText(this, getString(R.string.editor_insert_product_successful),
                         Toast.LENGTH_SHORT).show();
             }
-        } else {
+            } else {
             // Insert a new product into the provider, returning the content URI for the new product.
             int newUri = getContentResolver().update(mCurrentProductUri, values, null, null);
 
@@ -354,7 +365,9 @@ public class DetailActivity extends AppCompatActivity implements
                 Toast.makeText(this, getString(R.string.editor_update_droduct_successful),
                         Toast.LENGTH_SHORT).show();
             }
-        }
+            }
+        // Exit activity
+        finish();
     }
 
     @Override
@@ -373,8 +386,7 @@ public class DetailActivity extends AppCompatActivity implements
             case R.id.action_save:
                 // Save product to database
                 saveProduct();
-                // Exit activity
-                finish();
+
                 return true;
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
